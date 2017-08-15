@@ -1,4 +1,4 @@
-#React Playground
+# React Demo
 Just a spot to checkout and prototype the latest react features and libraries.
 
 ## Available Scripts
