@@ -10,7 +10,12 @@ import {
   CardBlock,
   CardTitle,
   CardSubtitle,
-  Button
+  Button,
+  Jumbotron,
+  Form,
+  FormGroup,
+  Input,
+  Container
 } from 'reactstrap';
 
 // Helper classes that mock an api call to GET the data
@@ -22,15 +27,27 @@ class Home extends Component {
   constructor() {
     super()
     this.state = { pics: [] }
+    this.state.search = ''
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  loadCommentsFromServer() {
+  handleSearch(event) {
+    this.getImages(this.state.search);
+  }
+
+  handleChange(event){
+    this.setState({search: event.target.value});
+  }
+
+
+  getImages(searchText) {
     var giphy = axios.create({
       baseURL: 'https://api.giphy.com/v1',
       timeout: 1000
     });
 
-    giphy.get('/gifs/search?q=dogs&api_key=' + config.giphy_api_key)
+    giphy.get('/gifs/search?rating=g&q='+ searchText + '&api_key=' + config.giphy_api_key)
       .then(function (response) {
         console.log("response", response);
         this.setState({pics: response.data.data})
@@ -41,7 +58,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-      this.loadCommentsFromServer();
+      this.getImages('sports');
     }
 
 
@@ -51,9 +68,24 @@ class Home extends Component {
 
     return (
       <div>
+        <Jumbotron>
+          <Container>
+            <Row>
+              <Col>
+                <h1>Welcome to Render</h1>
+                <Form inline onSubmit={this.handleSubmit}>
+                  <FormGroup>
+                    <Input value={this.state.search} onChange={this.handleChange} id="imageSearch" placeholder="Start Your Search" />
+                  </FormGroup>
+                  <Button onClick ={this.handleSearch}>Search</Button>
+                </Form>
+              </Col>
+            </Row>
+          </Container>
+        </Jumbotron>
         <Row>
           <Col>
-            <h3>DOGS</h3>
+            <h3>{this.state.search}</h3>
           </Col>
         </Row>
 
@@ -64,7 +96,7 @@ class Home extends Component {
                 <Card>
                   <CardImg top width="100%" src={pic.images.downsized_large.url} alt={pic.slug}/>
                   <CardBlock>
-                    <CardTitle>{pic.slug}</CardTitle>
+                    {/* <CardTitle>{pic.slug}</CardTitle> */}
                     <CardText>
                       <p>Rating: {pic.rating}</p>
                     </CardText>
@@ -77,27 +109,6 @@ class Home extends Component {
         </Row>
 
 
-        {/* <Row>
-          {cars.map(function(object, i) {
-            return (
-              <Col key={i} className="col-3">
-                <Card>
-                  <CardImg top width="100%" src={object.media} alt={object.name}/>
-                  <CardBlock>
-                    <CardTitle>{object.name}</CardTitle>
-                    <CardText>
-                      <p>{object.price}</p>
-                      <p>{object.year}</p>
-                      <p>{object.make}</p>
-                      <p>{object.model}</p>
-                    </CardText>
-                    <Button>Button</Button>
-                  </CardBlock>
-                </Card>
-              </Col>
-            );
-          })}
-        </Row> */}
       </div>
     );
   }

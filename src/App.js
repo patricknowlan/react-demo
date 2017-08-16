@@ -11,7 +11,11 @@ import {
   Row,
   Col,
   Jumbotron,
-  Button
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input
 } from 'reactstrap';
 
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
@@ -25,12 +29,12 @@ import CarDetail from './car/car-detail.component.jsx'
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false
     };
   }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
@@ -43,7 +47,7 @@ class App extends Component {
         <div>
           <Navbar color="primary" toggleable>
             <NavbarToggler right onClick={this.toggle}/>
-            <NavbarBrand className="text-white" href="/">reactstrap demo</NavbarBrand>
+            <NavbarBrand className="text-white" href="/">RENDER</NavbarBrand>
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>
                 <NavItem>
@@ -54,20 +58,6 @@ class App extends Component {
               </Nav>
             </Collapse>
           </Navbar>
-          <Jumbotron>
-            <Container>
-              <Row>
-                <Col>
-                  <h1>Welcome to React</h1>
-                  <p>
-                    <Button tag="a" color="success" size="large" href="http://reactstrap.github.io" target="_blank">
-                      View Reactstrap Docs
-                    </Button>
-                  </p>
-                </Col>
-              </Row>
-            </Container>
-          </Jumbotron>
           <Container>
             <Route exact={true} path="/" component={Home}/>
           </Container>
